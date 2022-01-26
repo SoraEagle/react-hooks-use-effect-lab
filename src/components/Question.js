@@ -5,20 +5,35 @@ function Question({ question, onAnswered }){
 
   // add useEffect code
   useEffect(() => {
-    console.log("The Question component has been re-rendered");
-    setTimeOut(() => setTimeRemaining(timeRemaining - 1), 1000); //Reset timeRemaining to 10 seconds after 10 seconds have passed.
+    // console.log("The Question component has been re-rendered");
+    let timeOutID = setTimeout(() => {
+      setTimeRemaining((timeRemaining) => (timeRemaining -= 1), 1000);
+    });
 
-    if(timeRemaining = 0){
-      setTimeRemaining(10);
+    if(timeRemaining = 0){ //If timer reaches 0:
+      // setTimeRemaining(10); //Reset timeRemaining to 10 seconds after 10 seconds have passed.
       onAnswered(false);
     }
 
     // Is any cleanup needed? YES
     return function cleanup(){
-      clearTimeOut();
-    }
+      clearTimeOut(timeOutID);
+    };
     // Are there any errors/warnings from using useEffect?
-  }, [timeRemaining]); //Run only when  timeRemaining changes
+  }, [timeRemaining, onAnswered]); //Run only when  timeRemaining changes
+
+  /*
+  useEffect(() => {
+    const timerID = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    // returning a cleanup function
+    return function cleanup() {
+      clearInterval(timerID);
+    };
+  }, []);
+  */
 
   function handleAnswer(isCorrect){
     setTimeRemaining(10);
